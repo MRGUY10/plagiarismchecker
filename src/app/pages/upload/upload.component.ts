@@ -2,6 +2,7 @@ import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
 import { DecimalPipe, NgClass, NgForOf, NgIf } from '@angular/common';
 import Chart from 'chart.js/auto';
 import { UploadService } from '../../services/upload.service';
+import { RouterModule } from '@angular/router';
 
 interface GroupedFile {
   [index: number]: string | number;
@@ -15,7 +16,7 @@ interface GroupedFile {
   templateUrl: './upload.component.html',
   styleUrls: ['./upload.component.css'],
   standalone: true,
-  imports: [NgForOf, NgClass, NgIf, DecimalPipe]
+  imports: [NgForOf, NgClass, NgIf, DecimalPipe,RouterModule]
 })
 export class UploadComponent implements OnInit {
   @ViewChild('fileInput') fileInput!: ElementRef;

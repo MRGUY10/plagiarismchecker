@@ -1,13 +1,14 @@
 import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { NgClass, NgForOf, NgIf } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-upload',
   templateUrl: './upload2.component.html',
   styleUrls: ['./upload2.component.css'],
   standalone: true,
-  imports: [NgForOf, NgClass, NgIf]
+  imports: [NgForOf, NgClass, NgIf,RouterModule]
 })
 export class Upload2Component implements OnInit {
   @ViewChild('fileInput') fileInput!: ElementRef;
@@ -17,7 +18,7 @@ export class Upload2Component implements OnInit {
   plagiarismResultsVisible = false;
   similarityResults: any[] = [];
   inspirationResult: string = '';
-  currentTab: string = 'code'; // Default tab
+  currentTab: string = 'text'; // Default tab
 
   constructor(private http: HttpClient) {}
 
@@ -160,5 +161,10 @@ export class Upload2Component implements OnInit {
 
   switchTab(tab: string): void {
     this.currentTab = tab;
+  }
+
+  checkAgain() {
+    this.plagiarismResultsVisible = false;
+    this.uploadedFiles = [];
   }
 }

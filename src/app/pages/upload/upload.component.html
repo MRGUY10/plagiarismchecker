@@ -2,20 +2,23 @@
   <div class="navbar-container">
     <button
       class="nav-button"
-      [ngClass]="{ active: currentTab === 'code' }"
+      routerLink=""
+      [routerLinkActive]="['active']"
       (click)="switchTab('code')"
     >
       Code Plagiarism Checker
     </button>
     <button
       class="nav-button"
-      [ngClass]="{ active: currentTab === 'text' }"
+      routerLink="u2"
+      [routerLinkActive]="['active']"
       (click)="switchTab('text')"
     >
       Text Plagiarism Checker
     </button>
   </div>
 </nav>
+
 
 <div class="upload-container" [ngClass]="{'blur-background': isUploading}">
   <!-- Instructions Section -->

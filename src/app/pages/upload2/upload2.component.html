@@ -1,21 +1,24 @@
 <nav class="navbar">
-    <div class="navbar-container">
-      <button
-        class="nav-button"
-        [ngClass]="{ active: currentTab === 'code' }"
-        (click)="switchTab('code')"
-      >
-        Code Plagiarism Checker
-      </button>
-      <button
-        class="nav-button"
-        [ngClass]="{ active: currentTab === 'text' }"
-        (click)="switchTab('text')"
-      >
-        Text Plagiarism Checker
-      </button>
-    </div>
-  </nav>
+  <div class="navbar-container">
+    <button
+      class="nav-button"
+      routerLink=""
+      [routerLinkActive]="['active']"
+      (click)="switchTab('code')"
+    >
+      Code Plagiarism Checker
+    </button>
+    <button
+      class="nav-button"
+      routerLink="u2"
+      [routerLinkActive]="['active']"
+      (click)="switchTab('text')"
+    >
+      Text Plagiarism Checker
+    </button>
+  </div>
+</nav>
+
   
   <div class="upload-container" [ngClass]="{'blur-background': isUploading}">
     <!-- Instructions Section -->
@@ -115,6 +118,7 @@
      <!-- Plagiarism Check Results Section -->
      <div *ngIf="plagiarismResultsVisible" class="plagiarism-results mt-4">
       <h2>Plagiarism Check Results</h2>
+      <button (click)="checkAgain()" class="check-again-button">Check another</button>
   
       <div *ngIf="similarityResults.length" class="results-table mt-3">
         <table class="table table-bordered">
