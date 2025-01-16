@@ -41,7 +41,6 @@
           <li>TypeScript (.ts)</li>
         </ul>
       </ul>
-
     </ul>
   </div>
 
@@ -117,29 +116,23 @@
   <div *ngIf="plagiarismResultsVisible" class="plagiarism-results">
     <h2>Plagiarism Check Results</h2>
 
-    <div *ngIf="uploadedFiles.length === 2" class="two-documents-results">
-      <h3>Document Comparison</h3>
-      <p>Comparing <strong>{{ uploadedFiles[0].name }}</strong> and <strong>{{ uploadedFiles[1].name }}</strong></p>
-      <div class="statistics">
-        <div class="stat-item">
-          <canvas id="comparisonChart"></canvas>
-        </div>
-        <div class="stat-item">
-          <p><strong>Similarity Percentage:</strong> {{ similarityPercentage }}%</p>
-        </div>
-      </div>
-    </div>
-
-    <div *ngIf="uploadedFiles.length > 2" class="multiple-documents-results">
-      <h3>Document Grouping</h3>
-      <div class="statistics">
-        <div class="stat-item">
-          <canvas id="groupingChart"></canvas>
-        </div>
-        <div class="stat-item">
-          <p><strong>Number of Groups:</strong> {{ numberOfGroups }}</p>
-        </div>
-      </div>
+    <div *ngIf="similarityResults.length" class="similarity-results">
+      <table>
+        <thead>
+          <tr>
+            <th>Document Pair</th>
+            <th>Similarity Percentage</th>
+            <th>Range</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let result of similarityResults">
+            <td>{{ result[0] }}</td>
+            <td>{{ result[1] }}%</td>
+            <td>{{ result[2] }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>
