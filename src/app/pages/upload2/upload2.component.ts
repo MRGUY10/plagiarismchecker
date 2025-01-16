@@ -95,7 +95,8 @@ export class Upload2Component implements OnInit {
       (response: any) => {
         this.isUploading = false;
         this.plagiarismResultsVisible = true;
-        const fileUrls = response.file_urls; // Get the file URLs from the response
+        const fileUrls = response.file_urls;
+        console.log(fileUrls) // Get the file URLs from the response
         this.checkSimilarities(fileUrls); // Pass the URLs to the similarity check method
       },
       (error) => {
@@ -149,7 +150,7 @@ export class Upload2Component implements OnInit {
   }
 
   sortSimilarityResults() {
-    this.similarityResults.sort((a, b) => a[1] - b[1]); // Sort by similarity percentage
+    this.similarityResults.sort((b,a) => a[1] - b[1]); // Sort by similarity percentage
   }
 
   displayInspirationResult(response: any) {
@@ -166,5 +167,7 @@ export class Upload2Component implements OnInit {
   checkAgain() {
     this.plagiarismResultsVisible = false;
     this.uploadedFiles = [];
+    this.inspirationResult='';
+    this.similarityResults=[]
   }
 }
