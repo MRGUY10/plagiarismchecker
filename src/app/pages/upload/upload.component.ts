@@ -86,7 +86,7 @@ export class UploadComponent implements OnInit {
           this.plagiarismResultsVisible = true;
           this.displayPlagiarismResults();
         }
-      }, 500);
+      }, 300);
     } else {
       alert('No files selected for upload');
     }
