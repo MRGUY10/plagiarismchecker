@@ -1,0 +1,254 @@
+.upload-container {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  position: relative;
+}
+
+.instructions {
+  width: 30%;
+  background-color: #f8f9fa;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.instructions h3 {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.instructions ul {
+  padding-left: 20px;
+}
+
+.instructions ul li {
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.instructions a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.upload-area {
+  width: 70%;
+  text-align: center;
+  position: relative;
+}
+
+.upload-area h2 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.upload-area .drop-zone {
+  margin: 15px 0;
+  padding: 30px;
+  border: 2px dashed #007bff;
+  border-radius: 5px;
+  background-color: #f8f9fa;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.upload-area button {
+  margin-top: 10px;
+  padding: 15px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.upload-area button:hover {
+  background-color: #0056b3;
+}
+
+.upload-area .note {
+  font-size: 12px;
+  color: #555;
+  margin-top: 10px;
+}
+
+.upload-area a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.uploaded-files {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.file-card {
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: 200px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.file-card h4 {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.file-card p {
+  font-size: 12px;
+  color: #555;
+  margin-top: 5px;
+}
+
+.file-card .file-info {
+  font-size: 12px;
+  color: #888;
+  margin-top: 5px;
+}
+
+.file-card .file-info i {
+  color: #007bff;
+}
+
+.file-card .file-card-action {
+  margin-top: 10px;
+}
+
+.file-card .file-card-action button {
+  padding: 5px 10px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.file-card .file-card-action button:hover {
+  background-color: #218838;
+}
+
+/* Loading bar styles */
+.loading-bar {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50%;
+  background-color: #f3f3f3;
+  border-radius: 5px;
+  overflow: hidden;
+  height: 20px;
+  z-index: 1000; /* Ensure the loading bar is above other elements */
+}
+
+.loading-bar .progress {
+  height: 100%;
+  background-color: #007bff;
+  width: 0;
+}
+
+/* Apply blur effect to the background when uploading */
+.blur-background {
+  filter: blur(5px);
+}
+
+/* Plagiarism results styles */
+.plagiarism-results {
+  margin-top: 30px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  text-align: left;
+  width: 70%; /* Match the width of the upload area */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.plagiarism-results h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.statistics {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stat-item {
+  flex: 1;
+  margin: 0 10px;
+}
+
+.stat-item canvas {
+  max-width: 100%;
+}
+
+.stat-item p {
+  font-size: 16px;
+  color: #333;
+}
+
+/* Document comparison styles */
+.two-documents-results h3 {
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+
+.two-documents-results p {
+  font-size: 16px;
+  color: #333;
+}
+
+/* Document grouping styles */
+.multiple-documents-results h3 {
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+.navbar {
+  background-color: #007bff;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.navbar-container {
+  display: flex;
+  gap: 20px;
+}
+
+.nav-button {
+  background-color: transparent;
+  color: #fff;
+  border: 1px solid #fff;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.nav-button.active {
+  background-color: #fff;
+  color: #007bff;
+  font-weight: bold;
+}
+
+.nav-button:hover {
+  background-color: #0056b3;
+  color: #fff;
+}
