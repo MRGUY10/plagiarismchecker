@@ -112,27 +112,29 @@
     </div>
   </div>
 
-  <!-- Plagiarism Check Results Section -->
-  <div *ngIf="plagiarismResultsVisible" class="plagiarism-results">
+   <!-- Plagiarism Check Results Section -->
+   <div *ngIf="plagiarismResultsVisible" class="plagiarism-results mt-4">
     <h2>Plagiarism Check Results</h2>
 
-    <div *ngIf="similarityResults.length" class="similarity-results">
-      <table>
+    <div *ngIf="similarityResults.length" class="results-table mt-3">
+      <table class="table table-bordered">
         <thead>
           <tr>
-            <th>Document Pair</th>
-            <th>Similarity Percentage</th>
-            <th>Range</th>
+            <th scope="col">Document Pair</th>
+            <th scope="col">Similarity Percentage</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let result of similarityResults">
             <td>{{ result[0] }}</td>
-            <td>{{ result[1] }}%</td>
-            <td>{{ result[2] }}</td>
+            <td>{{ result[1].toFixed(2) }}%</td>
           </tr>
         </tbody>
       </table>
+    </div>
+
+    <div *ngIf="inspirationResult" class="inspiration-result mt-3">
+      <h4>{{ inspirationResult }}</h4>
     </div>
   </div>
 </div>
