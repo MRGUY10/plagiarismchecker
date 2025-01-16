@@ -119,18 +119,18 @@
 
     <!-- Display Comparison Results -->
     <div *ngIf="uploadedFiles.length === 2" class="two-documents-results">
-      <h3>Document Comparison</h3>
-      <p>Comparing <strong>{{ uploadedFiles[0].name }}</strong> and <strong>{{ uploadedFiles[1].name }}</strong></p>
+      <h3 class="section-title">Document Comparison</h3>
+      <p class="comparison-info">Comparing Original Code <strong>{{ uploadedFiles[0].name }}</strong> and Your Code (for Comparison) <strong>{{ uploadedFiles[1].name }}</strong></p>
       <div class="statistics">
-        <div class="stat-item">
+        <div class="stat-item chart-container">
           <canvas id="comparisonChart"></canvas>
         </div>
-        <div class="stat-item">
-          <p><strong>Similarity Percentage:</strong> {{ similarityPercentage }}%</p>
-          <p><strong>Overlap Count:</strong> {{ overlapCount }}</p>
+        <div class="stat-item result-details">
+          <p class="result-info"><strong>Similarity Percentage:</strong> {{ similarityPercentage }}%</p>
+          <p class="result-info"><strong>Overlap Count:</strong> {{ overlapCount }}</p>
           <div class="overlap-lines">
-            <p><strong>Overlapping Lines:</strong></p>
-            <ul>
+            <p class="overlap-title"><strong>Overlapping Lines:</strong></p>
+            <ul class="overlap-list">
               <li *ngFor="let line of overlappingLines">{{ line }}</li>
             </ul>
           </div>
@@ -138,30 +138,40 @@
       </div>
     </div>
 
+
     <!-- Display Grouping Results -->
     <div *ngIf="uploadedFiles.length > 2" class="multiple-documents-results">
-      <h3>Document Grouping</h3>
+      <h3 class="section-title">Document Grouping</h3>
       <div class="statistics">
-        <div class="stat-item">
+        <div class="stat-item chart-container">
           <canvas id="groupingChart"></canvas>
         </div>
-        <div class="stat-item">
-          <p><strong>Number of Groups:</strong> {{ numberOfGroups }}</p>
+        <div class="stat-item result-details">
+          <p class="result-info"><strong>Number of Groups:</strong> {{ numberOfGroups }}</p>
           <div class="grouped-files">
-            <p><strong>Grouped Files:</strong></p>
-            <ul>
-              <li *ngFor="let group of groupedFiles">
-                {{ group[0] }} and {{ group[1] }}: <strong>{{ group[2] }}%</strong>
-              </li>
-            </ul>
+            <p class="grouped-title"><strong>Grouped Files:</strong></p>
+            <table class="grouped-table">
+              <thead>
+              <tr>
+                <th>Document Pair</th>
+                <th>Similarity Percentage</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let group of groupedFiles">
+                <td>{{ group[0] }} and {{ group[1] }}</td>
+                <td>{{ group[2] }}%</td>
+              </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
 
-  <!-- Loading bar (outside the blur container) -->
+
+    <!-- Loading bar (outside the blur container) -->
 <div *ngIf="isUploading" class="loading-bar">
   <div class="progress" [style.width.%]="uploadProgress"></div>
 </div>
