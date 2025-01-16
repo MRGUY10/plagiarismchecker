@@ -4,12 +4,12 @@ import { NgClass, NgForOf, NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-upload',
-  templateUrl: './upload.component.html',
-  styleUrls: ['./upload.component.css'],
+  templateUrl: './upload2.component.html',
+  styleUrls: ['./upload2.component.css'],
   standalone: true,
   imports: [NgForOf, NgClass, NgIf]
 })
-export class UploadComponent implements OnInit {
+export class Upload2Component implements OnInit {
   @ViewChild('fileInput') fileInput!: ElementRef;
   uploadedFiles: any[] = [];
   isUploading = false;

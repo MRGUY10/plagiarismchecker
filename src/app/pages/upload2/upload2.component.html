@@ -1,0 +1,146 @@
+<nav class="navbar">
+    <div class="navbar-container">
+      <button
+        class="nav-button"
+        [ngClass]="{ active: currentTab === 'code' }"
+        (click)="switchTab('code')"
+      >
+        Code Plagiarism Checker
+      </button>
+      <button
+        class="nav-button"
+        [ngClass]="{ active: currentTab === 'text' }"
+        (click)="switchTab('text')"
+      >
+        Text Plagiarism Checker
+      </button>
+    </div>
+  </nav>
+  
+  <div class="upload-container" [ngClass]="{'blur-background': isUploading}">
+    <!-- Instructions Section -->
+    <div *ngIf="!plagiarismResultsVisible && currentTab === 'code'" class="instructions">
+      <h3>INSTRUCTIONS</h3>
+      <ul>
+        <ul>
+          <li>To begin mapping your WorkWave data to a pre-made document form, we need to detect your document’s fields.</li>
+          <li>Upload your document to start the process. Detection only takes a few seconds.</li>
+          <li>
+            Refer to our <a href="#">support documentation</a> to learn more about pre-made document forms.
+          </li>
+          <li>Supported languages for code processing include:</li>
+          <ul>
+            <li>Python (.py)</li>
+            <li>Java (.java)</li>
+            <li>C++ (.cpp)</li>
+            <li>JavaScript (.js)</li>
+            <li>PHP (.php)</li>
+            <li>Ruby (.rb)</li>
+            <li>Swift (.swift)</li>
+            <li>Kotlin (.kt)</li>
+            <li>TypeScript (.ts)</li>
+          </ul>
+        </ul>
+      </ul>
+    </div>
+  
+    <div *ngIf="!plagiarismResultsVisible && currentTab === 'text'" class="instructions">
+      <h3>INSTRUCTIONS</h3>
+      <ul>
+        <li>To check your text for plagiarism, please upload the text files.</li>
+        <li>We support PDF, DOC, DOCX, and TXT formats.</li>
+        <li>
+          Refer to our <a href="#">support documentation</a> for more information.
+        </li>
+      </ul>
+    </div>
+  
+    <!-- Upload Area -->
+    <div *ngIf="!plagiarismResultsVisible && currentTab === 'code'" class="upload-area">
+      <h1>Code Plagiarism Detector</h1>
+      <p>Upload Code Files</p>
+  
+      <div class="upload-buttons">
+        <input type="file" #fileInput (change)="onFileSelected($event)" multiple style="display: none;">
+        <div
+          class="drop-zone"
+          (dragover)="onDragOver($event)"
+          (dragleave)="onDragLeave($event)"
+          (drop)="onDrop($event)">
+          <p>To upload, drag and drop your code files here or</p>
+          <button (click)="triggerFileInput()">Browse Code Files</button>
+          <button (click)="uploadFiles()" class="upload-button">Check for Plagiarism</button>
+        </div>
+      </div>
+  
+      <div class="uploaded-files">
+        <div class="file-card" *ngFor="let file of uploadedFiles; let i = index">
+          <h4>{{ file.name }}</h4>
+          <p>Size: {{ file.size }} bytes</p>
+          <div class="file-card-action">
+            <button (click)="removeFile(i)">Remove</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div *ngIf="!plagiarismResultsVisible && currentTab === 'text'" class="upload-area">
+      <h1>Text Plagiarism Detector</h1>
+      <p>Upload Text Files</p>
+  
+      <div class="upload-buttons">
+        <input type="file" #fileInput (change)="onFileSelected($event)" multiple style="display: none;">
+        <div
+          class="drop-zone"
+          (dragover)="onDragOver($event)"
+          (dragleave)="onDragLeave($event)"
+          (drop)="onDrop($event)">
+          <p>To upload, drag and drop your text files here or</p>
+          <button (click)="triggerFileInput()">Browse Text Files</button>
+          <button (click)="uploadFiles()" class="upload-button">Check for Plagiarism</button>
+        </div>
+      </div>
+  
+      <div class="uploaded-files">
+        <div class="file-card" *ngFor="let file of uploadedFiles; let i = index">
+          <h4>{{ file.name }}</h4>
+          <p>Size: {{ file.size }} bytes</p>
+          <div class="file-card-action">
+            <button (click)="removeFile(i)">Remove</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+     <!-- Plagiarism Check Results Section -->
+     <div *ngIf="plagiarismResultsVisible" class="plagiarism-results mt-4">
+      <h2>Plagiarism Check Results</h2>
+  
+      <div *ngIf="similarityResults.length" class="results-table mt-3">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">Document Pair</th>
+              <th scope="col">Similarity Percentage</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let result of similarityResults">
+              <td>{{ result[0] }}</td>
+              <td>{{ result[1].toFixed(2) }}%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+  
+      <div *ngIf="inspirationResult" class="inspiration-result mt-3">
+        <h4>{{ inspirationResult }}</h4>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Loading bar (outside the blur container) -->
+  <div *ngIf="isUploading" class="loading-bar">
+    <div class="progress" [style.width.%]="uploadProgress"></div>
+  </div>
+  
