@@ -23,6 +23,9 @@ export class UploadComponent implements OnInit {
 
   ngOnInit() {}
 
+  // for remote : https://host-api-python.onrender.com
+  // for local : http://127.0.0.1:5000
+
   onFileSelected(event: any) {
     const files = event.target.files;
     if (files.length > 0) {
@@ -87,7 +90,7 @@ export class UploadComponent implements OnInit {
   }
 
   uploadFilesForSimilarity(formData: FormData) {
-    this.http.post('http://127.0.0.1:5000/upload', formData).subscribe(
+    this.http.post('https://host-api-python.onrender.com/upload', formData).subscribe(
       (response: any) => {
         this.isUploading = false;
         this.plagiarismResultsVisible = true;
@@ -102,7 +105,7 @@ export class UploadComponent implements OnInit {
   }
 
   uploadFilesForInspiration(formData: FormData) {
-    this.http.post('http://127.0.0.1:5000/upload', formData).subscribe(
+    this.http.post('https://host-api-python.onrender.com/upload', formData).subscribe(
       (response: any) => {
         this.isUploading = false;
         this.plagiarismResultsVisible = true;
@@ -117,7 +120,7 @@ export class UploadComponent implements OnInit {
   }
 
   checkSimilarities(fileUrls: string[]) {
-    this.http.post('http://127.0.0.1:5000/similarities', { file_paths: fileUrls }).subscribe(
+    this.http.post('https://host-api-python.onrender.com/similarities', { file_paths: fileUrls }).subscribe(
       (response: any) => {
         this.displayPlagiarismResults(response);
       },
