@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -7,19 +7,22 @@ import { Observable } from 'rxjs';
 })
 export class UploadService {
 
-  private apiUrl = 'http://127.0.0.1:5000'; // Flask API base URL
+  private apiUrl = 'https://plagiarism-yu4v.onrender.com';
 
   constructor(private http: HttpClient) { }
 
-  // Method to compare two files
-  compareFiles(file1: string, file2: string): Observable<any> {
-    const body = { file1, file2 };
-    return this.http.post(`${this.apiUrl}/compare`, body);
+  compareFiles(file1: File, file2: File): Observable<any> {
+    const formData = new (window as any).FormData() as FormData;
+    formData.append('file1', file1, file1.name);
+    formData.append('file2', file2, file2.name);
+
+    return this.http.post<any>(`${this.apiUrl}/compare`, formData);
   }
 
-  // Method to group similar files
-  groupFiles(filePaths: string[]): Observable<any> {
-    const body = { file_paths: filePaths };
-    return this.http.post(`${this.apiUrl}/group`, body);
+  groupFiles(files: File[]): Observable<any> {
+    const formData = new (window as any).FormData() as FormData;
+    files.forEach(file => formData.append('files', file, file.name));
+
+    return this.http.post<any>(`${this.apiUrl}/group`, formData);
   }
 }
