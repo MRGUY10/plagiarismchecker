@@ -22,24 +22,22 @@
   <div *ngIf="!plagiarismResultsVisible && currentTab === 'code'" class="instructions">
     <h3>INSTRUCTIONS</h3>
     <ul>
+      <li>To begin mapping your WorkWave data to a pre-made document form, we need to detect your document’s fields.</li>
+      <li>Upload your document to start the process. Detection only takes a few seconds.</li>
+      <li>
+        Refer to our <a href="#">support documentation</a> to learn more about pre-made document forms.
+      </li>
+      <li>Supported languages for code processing include:</li>
       <ul>
-        <li>To begin mapping your WorkWave data to a pre-made document form, we need to detect your document’s fields.</li>
-        <li>Upload your document to start the process. Detection only takes a few seconds.</li>
-        <li>
-          Refer to our <a href="#">support documentation</a> to learn more about pre-made document forms.
-        </li>
-        <li>Supported languages for code processing include:</li>
-        <ul>
-          <li>Python (.py)</li>
-          <li>Java (.java)</li>
-          <li>C++ (.cpp)</li>
-          <li>JavaScript (.js)</li>
-          <li>PHP (.php)</li>
-          <li>Ruby (.rb)</li>
-          <li>Swift (.swift)</li>
-          <li>Kotlin (.kt)</li>
-          <li>TypeScript (.ts)</li>
-        </ul>
+        <li>Python (.py)</li>
+        <li>Java (.java)</li>
+        <li>C++ (.cpp)</li>
+        <li>JavaScript (.js)</li>
+        <li>PHP (.php)</li>
+        <li>Ruby (.rb)</li>
+        <li>Swift (.swift)</li>
+        <li>Kotlin (.kt)</li>
+        <li>TypeScript (.ts)</li>
       </ul>
     </ul>
   </div>
@@ -57,7 +55,7 @@
 
   <!-- Upload Area -->
   <div *ngIf="!plagiarismResultsVisible && currentTab === 'code'" class="upload-area">
-    <h1>Code Plagiarism Detector</h1>
+    <h2>Code Plagiarism Detector</h2>
     <p>Upload Code Files</p>
 
     <div class="upload-buttons">
@@ -76,7 +74,7 @@
     <div class="uploaded-files">
       <div class="file-card" *ngFor="let file of uploadedFiles; let i = index">
         <h4>{{ file.name }}</h4>
-        <p>Size: {{ file.size }} bytes</p>
+        <p>Size: {{ file.size | number }} bytes</p>
         <div class="file-card-action">
           <button (click)="removeFile(i)">Remove</button>
         </div>
@@ -85,7 +83,7 @@
   </div>
 
   <div *ngIf="!plagiarismResultsVisible && currentTab === 'text'" class="upload-area">
-    <h1>Text Plagiarism Detector</h1>
+    <h2>Text Plagiarism Detector</h2>
     <p>Upload Text Files</p>
 
     <div class="upload-buttons">
@@ -104,7 +102,7 @@
     <div class="uploaded-files">
       <div class="file-card" *ngFor="let file of uploadedFiles; let i = index">
         <h4>{{ file.name }}</h4>
-        <p>Size: {{ file.size }} bytes</p>
+        <p>Size: {{ file.size | number }} bytes</p>
         <div class="file-card-action">
           <button (click)="removeFile(i)">Remove</button>
         </div>
@@ -112,34 +110,69 @@
     </div>
   </div>
 
-   <!-- Plagiarism Check Results Section -->
-   <div *ngIf="plagiarismResultsVisible" class="plagiarism-results mt-4">
-    <h2>Plagiarism Check Results</h2>
-
-    <div *ngIf="similarityResults.length" class="results-table mt-3">
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th scope="col">Document Pair</th>
-            <th scope="col">Similarity Percentage</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let result of similarityResults">
-            <td>{{ result[0] }}</td>
-            <td>{{ result[1].toFixed(2) }}%</td>
-          </tr>
-        </tbody>
-      </table>
+  <!-- Plagiarism Check Results Section -->
+  <div *ngIf="plagiarismResultsVisible" class="plagiarism-results">
+    <div class="results-header">
+      <h2>Plagiarism Check Results</h2>
+      <button (click)="checkAgain()" class="check-again-button">Check another</button>
     </div>
 
-    <div *ngIf="inspirationResult" class="inspiration-result mt-3">
-      <h4>{{ inspirationResult }}</h4>
+    <!-- Display Comparison Results -->
+    <div *ngIf="uploadedFiles.length === 2" class="two-documents-results">
+      <h3 class="section-title">Document Comparison</h3>
+      <p class="comparison-info">Comparing Original Code <strong>{{ uploadedFiles[0].name }}</strong> and Your Code (for Comparison) <strong>{{ uploadedFiles[1].name }}</strong></p>
+      <div class="statistics">
+        <div class="stat-item chart-container">
+          <canvas id="comparisonChart"></canvas>
+        </div>
+        <div class="stat-item result-details">
+          <p class="result-info"><strong>Similarity Percentage:</strong> {{ similarityPercentage }}%</p>
+          <p class="result-info"><strong>Overlap Count:</strong> {{ overlapCount }}</p>
+          <div class="overlap-lines">
+            <p class="overlap-title"><strong>Overlapping Lines:</strong></p>
+            <ul class="overlap-list">
+              <li *ngFor="let line of overlappingLines">{{ line }}</li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
 
-<!-- Loading bar (outside the blur container) -->
+
+    <!-- Display Grouping Results -->
+    <div *ngIf="uploadedFiles.length > 2" class="multiple-documents-results">
+      <h3 class="section-title">Document Grouping</h3>
+      <div class="statistics">
+        <div class="stat-item chart-container">
+          <canvas id="groupingChart"></canvas>
+        </div>
+        <div class="stat-item result-details">
+          <p class="result-info"><strong>Number of Groups:</strong> {{ numberOfGroups }}</p>
+          <div class="grouped-files">
+            <p class="grouped-title"><strong>Grouped Files:</strong></p>
+            <table class="grouped-table">
+              <thead>
+              <tr>
+                <th>Document Pair</th>
+                <th>Similarity Percentage</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let group of groupedFiles">
+                <td>{{ group[0] }} and {{ group[1] }}</td>
+                <td>{{ group[2] }}%</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <!-- Loading bar (outside the blur container) -->
 <div *ngIf="isUploading" class="loading-bar">
   <div class="progress" [style.width.%]="uploadProgress"></div>
 </div>
+  </div>

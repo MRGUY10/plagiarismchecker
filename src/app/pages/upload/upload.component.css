@@ -1,3 +1,37 @@
+.navbar {
+  background-color: #007bff;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.navbar-container {
+  display: flex;
+  gap: 20px;
+}
+
+.nav-button {
+  background-color: transparent;
+  color: #fff;
+  border: 1px solid #fff;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.nav-button.active {
+  background-color: #fff;
+  color: #007bff;
+  font-weight: bold;
+}
+
+.nav-button:hover {
+  background-color: #0056b3;
+  color: #fff;
+}
+
 .upload-container {
   display: flex;
   gap: 20px;
@@ -173,7 +207,7 @@
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   text-align: left;
-  width: 70%; /* Match the width of the upload area */
+  width: 100%; /* Match the width of the upload area */
   margin-left: auto;
   margin-right: auto;
 }
@@ -181,6 +215,7 @@
 .plagiarism-results h2 {
   font-size: 24px;
   margin-bottom: 20px;
+  color: #333;
 }
 
 .statistics {
@@ -219,38 +254,247 @@
   font-size: 20px;
   margin-bottom: 15px;
 }
-.navbar {
-  background-color: #007bff;
+
+.grouped-files ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.grouped-files li {
+  background-color: #f8f9fa;
+  margin: 5px 0;
   padding: 10px;
+  border-radius: 5px;
+  font-size: 14px;
+  color: #333;
+}
+.plagiarism-results {
+  margin-top: 30px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  text-align: left;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.results-header {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
 }
 
-.navbar-container {
-  display: flex;
-  gap: 20px;
+.results-header h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #333;
 }
 
-.nav-button {
-  background-color: transparent;
-  color: #fff;
-  border: 1px solid #fff;
+.check-again-button {
   padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
   border-radius: 5px;
   cursor: pointer;
   font-size: 14px;
 }
 
-.nav-button.active {
-  background-color: #fff;
+.check-again-button:hover {
+  background-color: #0056b3;
+}
+
+.statistics {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stat-item {
+  flex: 1;
+  margin: 0 10px;
+}
+
+.stat-item canvas {
+  max-width: 100%;
+}
+
+.stat-item p {
+  font-size: 16px;
+  color: #333;
+}
+
+.two-documents-results h3,
+.multiple-documents-results h3 {
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+
+.two-documents-results p,
+.multiple-documents-results p {
+  font-size: 16px;
+  color: #333;
+}
+
+.grouped-files ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.grouped-files li {
+  background-color: #f8f9fa;
+  margin: 5px 0;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 14px;
+  color: #333;
+}
+/* Comparison Section Styles */
+.two-documents-results {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+.section-title {
+  font-size: 24px;
+  font-weight: bold;
   color: #007bff;
+  margin-bottom: 15px;
+}
+
+.comparison-info {
+  font-size: 16px;
+  color: #333333;
+  margin-bottom: 20px;
+}
+
+.statistics {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.stat-item {
+  flex: 1;
+  margin: 0 10px;
+}
+
+.chart-container {
+  padding: 15px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+}
+
+.result-details {
+  background-color: #f8f9fa;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.result-info {
+  font-size: 18px;
+  color: #333333;
+  margin-bottom: 10px;
+}
+
+.overlap-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.overlap-list {
+  list-style: none;
+  padding: 0;
+  font-size: 16px;
+  color: #555555;
+}
+
+.overlap-list li {
+  margin-bottom: 5px;
+  background-color: #ffffff;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+}
+/* Grouping Section Styles */
+.multiple-documents-results {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+.section-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #007bff;
+  margin-bottom: 15px;
+}
+
+.statistics {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.stat-item {
+  flex: 1;
+  margin: 0 10px;
+}
+
+.chart-container {
+  padding: 15px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+}
+
+.result-details {
+  background-color: #f8f9fa;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.result-info {
+  font-size: 18px;
+  color: #333333;
+  margin-bottom: 10px;
+}
+
+.grouped-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.grouped-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.grouped-table th,
+.grouped-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.grouped-table th {
+  background-color: #007bff;
+  color: white;
   font-weight: bold;
 }
 
-.nav-button:hover {
-  background-color: #0056b3;
-  color: #fff;
+.grouped-table td {
+  background-color: #f8f9fa;
+  color: #333333;
 }
 
 .plagiarism-results {
