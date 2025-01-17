@@ -83,9 +83,9 @@ export class Upload2Component implements OnInit {
         this.isUploading = false;
         console.log('Server response:', response); // Add this line for debugging
   
-        // Ensure 'response.file_paths' is defined before accessing 'length'
-        if (response.file_paths) {
-          const filePaths = response.file_paths; // Ensure this key matches the backend response
+        // Ensure 'response.file_urls' is defined before accessing 'length'
+        if (response && response.file_urls) {
+          const filePaths = response.file_urls; // Ensure this key matches the backend response
           console.log('Uploaded file paths:', filePaths);
   
           if (filePaths.length === 2) {
@@ -127,8 +127,6 @@ export class Upload2Component implements OnInit {
     );
   }
   
-  
-
   checkInspiration(filePaths: string[]) {
     const inspirationUrl = `${this.apiBaseUrl}/inspiration`;
   
@@ -143,8 +141,6 @@ export class Upload2Component implements OnInit {
     );
   }
   
-  
-
   displayPlagiarismResults(response: any) {
     console.log('Plagiarism results:', response);
     this.similarityResults = response;
@@ -154,20 +150,18 @@ export class Upload2Component implements OnInit {
 
   displayInspirationResult(response: any) {
     console.log('Inspiration result:', response);
-  
-    if (response && response.max_similarity !== undefined) {
+
+    if (response && response.inspiration_percentage !== undefined) {
       const file1 = this.uploadedFiles[0].name;
       const file2 = this.uploadedFiles[1].name;
-      this.inspirationResult = `${file1} is inspired ${response.max_similarity.toFixed(2)}% by ${file2}`;
+      this.inspirationResult = `${file1} is inspired ${response.inspiration_percentage.toFixed(2)}% by ${file2}`;
     } else {
       console.error('Invalid inspiration response:', response);
       alert('Failed to retrieve inspiration result.');
     }
-  
+
     this.plagiarismResultsVisible = true;
   }
-  
-
 
   switchTab(tab: string): void {
     this.currentTab = tab;
