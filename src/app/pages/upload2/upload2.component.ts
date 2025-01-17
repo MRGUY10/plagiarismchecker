@@ -8,33 +8,32 @@ import { RouterModule } from '@angular/router';
   templateUrl: './upload2.component.html',
   styleUrls: ['./upload2.component.css'],
   standalone: true,
-  imports: [NgForOf, NgClass, NgIf,RouterModule]
+  imports: [NgForOf, NgClass, NgIf, RouterModule],
 })
 export class Upload2Component implements OnInit {
   @ViewChild('fileInput') fileInput!: ElementRef;
-  uploadedFiles: any[] = [];
+  uploadedFiles: File[] = [];
   isUploading = false;
   uploadProgress = 0;
   plagiarismResultsVisible = false;
-  similarityResults: any[] = [];
+  similarityResults: { files: string[]; max_similarity: number }[] = [];
   inspirationResult: string = '';
-  currentTab: string = 'text'; // Default tab
+  currentTab: string = 'text'; // Default tab for text plagiarism checker
 
   constructor(private http: HttpClient) {}
 
   ngOnInit() {}
 
-  // for remote : https://host-api-python.onrender.com
-  // for local : http://127.0.0.1:5000
+  // API Base URL
+  apiBaseUrl = 'https://host-api-python.onrender.com';
 
+  // File selection
   onFileSelected(event: any) {
-    const files = event.target.files;
-    if (files.length > 0) {
-      for (let i = 0; i < files.length; i++) {
-        this.uploadedFiles.push(files[i]);
-      }
-      console.log('Selected files:', this.uploadedFiles);
+    const files: FileList = event.target.files;
+    for (let i = 0; i < files.length; i++) {
+      this.uploadedFiles.push(files[i]);
     }
+    console.log('Selected files:', this.uploadedFiles);
   }
 
   triggerFileInput() {
@@ -46,84 +45,76 @@ export class Upload2Component implements OnInit {
     console.log('Updated files:', this.uploadedFiles);
   }
 
-  onDragOver(event: any) {
+  onDragOver(event: DragEvent) {
     event.preventDefault();
     event.stopPropagation();
-    event.target.classList.add('drag-over');
   }
 
-  onDragLeave(event: any) {
+  onDragLeave(event: DragEvent) {
     event.preventDefault();
     event.stopPropagation();
-    event.target.classList.remove('drag-over');
   }
 
-  onDrop(event: any) {
+  onDrop(event: DragEvent) {
     event.preventDefault();
     event.stopPropagation();
-    event.target.classList.remove('drag-over');
-
-    const files = event.dataTransfer.files;
-    if (files.length > 0) {
-      for (let i = 0; i < files.length; i++) {
-        this.uploadedFiles.push(files[i]);
-      }
-      console.log('Dropped files:', this.uploadedFiles);
+    const files: FileList = event.dataTransfer?.files || new DataTransfer().files;
+    for (let i = 0; i < files.length; i++) {
+      this.uploadedFiles.push(files[i]);
     }
+    console.log('Dropped files:', this.uploadedFiles);
   }
 
   uploadFiles() {
-    if (this.uploadedFiles.length > 0) {
-      this.isUploading = true;
-      const formData = new FormData();
-      this.uploadedFiles.forEach(file => {
-        formData.append('files', file, file.name);
-      });
-
-      if (this.uploadedFiles.length === 2) {
-        this.uploadFilesForInspiration(formData);
-      } else {
-        this.uploadFilesForSimilarity(formData);
-      }
-    } else {
-      alert('No files selected for upload');
+    if (this.uploadedFiles.length < 1) {
+      alert('Please select files to upload.');
+      return;
     }
-  }
-
-  uploadFilesForSimilarity(formData: FormData) {
-    this.http.post('https://host-api-python.onrender.com/upload', formData).subscribe(
+  
+    this.isUploading = true;
+    const formData = new FormData();
+  
+    // Append files to the form data
+    this.uploadedFiles.forEach((file) => formData.append('files', file, file.name));
+    const uploadUrl = `${this.apiBaseUrl}/upload`;
+  
+    this.http.post(uploadUrl, formData).subscribe(
       (response: any) => {
         this.isUploading = false;
-        this.plagiarismResultsVisible = true;
-        const fileUrls = response.file_urls;
-        console.log(fileUrls) // Get the file URLs from the response
-        this.checkSimilarities(fileUrls); // Pass the URLs to the similarity check method
+  
+        // Extract file paths from the response
+        const filePaths = response.file_urls; // Ensure this key matches the backend response
+        console.log('Uploaded file paths:', filePaths);
+  
+        if (filePaths.length === 2) {
+          this.checkInspiration(filePaths); // Call inspiration check for 2 files
+        } else if (filePaths.length > 2) {
+          this.checkSimilarities(filePaths); // Call similarity check for multiple files
+        } else {
+          alert('Please upload at least 2 files.');
+        }
       },
       (error) => {
         console.error('Upload error:', error);
         this.isUploading = false;
+  
+        if (error.status === 400) {
+          alert('Invalid request. Please check file format and size.');
+        } else {
+          alert('An unexpected error occurred.');
+        }
       }
     );
   }
+  
+  
 
-  uploadFilesForInspiration(formData: FormData) {
-    this.http.post('https://host-api-python.onrender.com/upload', formData).subscribe(
+  checkSimilarities(filePaths: string[]) {
+    const similaritiesUrl = `${this.apiBaseUrl}/similarities`;
+  
+    this.http.post(similaritiesUrl, { file_paths: filePaths }).subscribe(
       (response: any) => {
-        this.isUploading = false;
-        this.plagiarismResultsVisible = true;
-        const fileUrls = response.file_urls; // Get the file URLs from the response
-        this.checkInspiration(fileUrls); // Pass the URLs to the inspiration check method
-      },
-      (error) => {
-        console.error('Upload error:', error);
-        this.isUploading = false;
-      }
-    );
-  }
-
-  checkSimilarities(fileUrls: string[]) {
-    this.http.post('https://host-api-python.onrender.com/similarities', { file_paths: fileUrls }).subscribe(
-      (response: any) => {
+        console.log('Similarity check response:', response);
         this.displayPlagiarismResults(response);
       },
       (error) => {
@@ -131,10 +122,15 @@ export class Upload2Component implements OnInit {
       }
     );
   }
+  
+  
 
-  checkInspiration(fileUrls: string[]) {
-    this.http.post('https://host-api-python.onrender.com/inspiration', { file_paths: fileUrls }).subscribe(
+  checkInspiration(filePaths: string[]) {
+    const inspirationUrl = `${this.apiBaseUrl}/inspiration`;
+  
+    this.http.post(inspirationUrl, { file_paths: filePaths }).subscribe(
       (response: any) => {
+        console.log('Inspiration check response:', response);
         this.displayInspirationResult(response);
       },
       (error) => {
@@ -142,15 +138,14 @@ export class Upload2Component implements OnInit {
       }
     );
   }
+  
+  
 
   displayPlagiarismResults(response: any) {
     console.log('Plagiarism results:', response);
     this.similarityResults = response;
-    this.sortSimilarityResults();
-  }
-
-  sortSimilarityResults() {
-    this.similarityResults.sort((b,a) => a[1] - b[1]); // Sort by similarity percentage
+    this.similarityResults.sort((a, b) => b.max_similarity - a.max_similarity);
+    this.plagiarismResultsVisible = true;
   }
 
   displayInspirationResult(response: any) {
@@ -158,16 +153,22 @@ export class Upload2Component implements OnInit {
     const file1 = this.uploadedFiles[0].name;
     const file2 = this.uploadedFiles[1].name;
     this.inspirationResult = `${file1} is inspired ${response.inspiration_percentage.toFixed(2)}% by ${file2}`;
+    this.plagiarismResultsVisible = true;
   }
 
   switchTab(tab: string): void {
     this.currentTab = tab;
+    this.resetView();
+  }
+
+  resetView() {
+    this.plagiarismResultsVisible = false;
+    this.uploadedFiles = [];
+    this.inspirationResult = '';
+    this.similarityResults = [];
   }
 
   checkAgain() {
-    this.plagiarismResultsVisible = false;
-    this.uploadedFiles = [];
-    this.inspirationResult='';
-    this.similarityResults=[]
+    this.resetView();
   }
 }

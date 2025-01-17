@@ -130,8 +130,8 @@
           </thead>
           <tbody>
             <tr *ngFor="let result of similarityResults">
-              <td>{{ result[0] }}</td>
-              <td>{{ result[1].toFixed(2) }}%</td>
+              <td>{{ result.files.join(', ') }}</td>
+              <td>{{ result.max_similarity.toFixed(2) }}%</td>
             </tr>
           </tbody>
         </table>
