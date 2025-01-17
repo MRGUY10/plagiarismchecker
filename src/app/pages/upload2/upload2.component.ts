@@ -81,17 +81,23 @@ export class Upload2Component implements OnInit {
     this.http.post(uploadUrl, formData).subscribe(
       (response: any) => {
         this.isUploading = false;
+        console.log('Server response:', response); // Add this line for debugging
   
-        // Extract file paths from the response
-        const filePaths = response.file_urls; // Ensure this key matches the backend response
-        console.log('Uploaded file paths:', filePaths);
+        // Ensure 'response.file_paths' is defined before accessing 'length'
+        if (response.file_paths) {
+          const filePaths = response.file_paths; // Ensure this key matches the backend response
+          console.log('Uploaded file paths:', filePaths);
   
-        if (filePaths.length === 2) {
-          this.checkInspiration(filePaths); // Call inspiration check for 2 files
-        } else if (filePaths.length > 2) {
-          this.checkSimilarities(filePaths); // Call similarity check for multiple files
+          if (filePaths.length === 2) {
+            this.checkInspiration(filePaths); // Call inspiration check for 2 files
+          } else if (filePaths.length > 2) {
+            this.checkSimilarities(filePaths); // Call similarity check for multiple files
+          } else {
+            alert('Please upload at least 2 files.');
+          }
         } else {
-          alert('Please upload at least 2 files.');
+          console.error('No file URLs returned from the server.', response); // Log the entire response for debugging
+          alert('No file URLs returned from the server.');
         }
       },
       (error) => {
@@ -106,8 +112,6 @@ export class Upload2Component implements OnInit {
       }
     );
   }
-  
-  
 
   checkSimilarities(filePaths: string[]) {
     const similaritiesUrl = `${this.apiBaseUrl}/similarities`;
