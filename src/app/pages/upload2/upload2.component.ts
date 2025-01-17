@@ -154,11 +154,20 @@ export class Upload2Component implements OnInit {
 
   displayInspirationResult(response: any) {
     console.log('Inspiration result:', response);
-    const file1 = this.uploadedFiles[0].name;
-    const file2 = this.uploadedFiles[1].name;
-    this.inspirationResult = `${file1} is inspired ${response.inspiration_percentage.toFixed(2)}% by ${file2}`;
+  
+    if (response && response.max_similarity !== undefined) {
+      const file1 = this.uploadedFiles[0].name;
+      const file2 = this.uploadedFiles[1].name;
+      this.inspirationResult = `${file1} is inspired ${response.max_similarity.toFixed(2)}% by ${file2}`;
+    } else {
+      console.error('Invalid inspiration response:', response);
+      alert('Failed to retrieve inspiration result.');
+    }
+  
     this.plagiarismResultsVisible = true;
   }
+  
+
 
   switchTab(tab: string): void {
     this.currentTab = tab;
